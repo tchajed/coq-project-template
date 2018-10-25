@@ -1,5 +1,5 @@
-ALL_VFILES := $(shell find -L 'src' -name "*.v") $(shell find -L 'vendor' -name "*.v")
-ALL_TEST_VFILES := $(shell find -L 'src' -name "*Tests.v") $(shell find -L 'vendor' -name "*Tests.v")
+ALL_VFILES := $(shell find -L 'src' 'vendor' -name "*.v")
+ALL_TEST_VFILES := $(shell find -L 'src' 'vendor' -name "*Tests.v")
 TEST_VFILES := $(shell find -L 'src' -name "*Tests.v")
 VFILES := $(filter-out $(ALL_TEST_VFILES),$(ALL_VFILES))
 
