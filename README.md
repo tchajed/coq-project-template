@@ -2,7 +2,7 @@
 
 Copy this repo's `Makefile` and `.gitignore`. You should put your library's top-level namespace in the file `libname` (this is the root of all modules in your library within Coq) As a convention we use the CamelCase name  of the library.
 
-Your code should go in `src` (possibly in subdirectories).
+Your code should go in `src` (possibly in subdirectories). You'll also need a `vendor` directory to hold dependencies (even if it's empty).
 
 To add a library, do the following:
 
