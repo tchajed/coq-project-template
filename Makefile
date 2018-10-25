@@ -3,22 +3,31 @@ ALL_TEST_VFILES := $(shell find -L 'src' 'vendor' -name "*Tests.v")
 TEST_VFILES := $(shell find -L 'src' -name "*Tests.v")
 VFILES := $(filter-out $(ALL_TEST_VFILES),$(ALL_VFILES))
 
-COQ_ARGS := $(shell cat '_CoqProject')
-
 default: $(VFILES:.v=.vo)
 
 test: $(TEST_VFILES:.v=.vo) $(VFILES:.v=vo)
+
+
+_CoqProject: libname $(wildcard vendor/*)
+	@echo "-R src $$(cat libname)" > $@
+	@for libdir in vendor/*; do \
+		echo "-R $$libdir/src $$(cat $$libdir/libname)" >> $@; \
+	done
+	@echo "_CoqProject:"
+	@cat $@
 
 .coqdeps.d: $(ALL_VFILES) _CoqProject
 	coqdep -f _CoqProject $(ALL_VFILES) > "$@"
 
 -include .coqdeps.d
 
-%.vo: %.v .coqdeps.d
-	coqc $(COQ_ARGS) $< -o $@
+%.vo: %.v .coqdeps.d _CoqProject
+	@echo "COQC $<"
+	@coqc $(shell cat '_CoqProject') $< -o $@
 
 clean:
-	rm -f $(ALL_VFILES:.v=.vo) $(ALL_VFILES:.v=.glob) .coqdeps.d
-	find . -name ".*.aux" -exec rm {} \;
+	@echo "CLEAN vo glob aux"
+	@rm -f $(ALL_VFILES:.v=.vo) $(ALL_VFILES:.v=.glob) .coqdeps.d _CoqProject
+	@find . -name ".*.aux" -exec rm {} \;
 
 .PHONY: default test clean
