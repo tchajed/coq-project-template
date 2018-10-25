@@ -12,5 +12,5 @@ To add a library, do the following:
 
 For example, to add this library you would do:
 
-1. `git submodule add https://github.com/tchajed/coq-lib-example vendor/example``.
+1. `git submodule add https://github.com/tchajed/coq-lib-example vendor/example`.
 2. Add `-R vendor/example/src Example` to `_CoqProject`.
