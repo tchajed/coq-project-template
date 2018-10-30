@@ -5,7 +5,7 @@ VFILES := $(filter-out $(TEST_VFILES),$(PROJ_VFILES))
 
 default: $(VFILES:.v=.vo)
 
-test: $(TEST_VFILES:.v=.vo) $(VFILES:.v=vo)
+test: $(TEST_VFILES:.v=.vo) $(VFILES:.v=.vo)
 
 
 _CoqProject: libname $(wildcard vendor/*)
