@@ -16,7 +16,10 @@ if not path.isdir("src"):
 if not path.isdir("vendor"):
     os.mkdir("vendor")
 
-if not path.exists("vendor/.gitignore"):
+# vendor directory should be initialized
+# if there are no dependencies then store a .gitignore file so git creates the directory,
+# but if there are submodules git will create the directory automatically.
+if not path.exists("vendor/.gitignore") and not path.exists(".gitmodules"):
     shutil.copy(path.join(script_dir, "vendor", ".gitignore"), "vendor/")
 
 def to_camel_case(s):
