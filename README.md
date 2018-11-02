@@ -19,3 +19,7 @@ For example, to add this library you would do:
 Copy this repo's `Makefile` and `.gitignore`. You should put your library's top-level namespace in the file `libname` (the entire file will be a single word). As a convention we use the CamelCase name of the library.
 
 Your code should go in `src` (possibly in subdirectories), which is re-mapped in Coq to the top-level namespace given by `libname`.
+
+## Stability
+
+We will probably change this setup several times before even remotely attempting stability.
