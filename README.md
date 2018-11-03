@@ -25,3 +25,11 @@ For Travis CI, copy `travis.yml` to `.travis.yml` and then enable builds from <h
 ## Stability
 
 We will probably change this setup several times before even remotely attempting stability.
+
+# Projects using this
+
+Here are some projects where I'm now using this (if you use it, please let me know!):
+
+- [coq-tactical](https://github.com/tchajed/coq-tactical)
+- [coq-sep-logic](https://github.com/tchajed/coq-sep-logic)
+- [coq-record-update](https://github.com/tchajed/coq-record-update)
