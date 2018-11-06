@@ -1,6 +1,6 @@
 # Example Coq project setup
 
-There's a script `init.py` in this repo which will set up a new project for you. It can also work on an existing project, but note that it overwrites your Makefile. The script does not set up Travis CI, but a [working Travis configuration](travis.yml) is included in this repo.
+Run `coup init` in this repo to set up a new project. The script does not set up Travis CI, but a [working Travis configuration](travis.yml) is included in this repo.
 
 ## Adding a dependency
 

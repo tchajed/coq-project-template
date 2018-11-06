@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+
+import sys
+import os
+from os import path
+import shutil
+
+def to_camel_case(s):
+    """Convert s, with words separated by -, into CamelCase."""
+    words = s.split("-")
+    return "".join([word.capitalize() for word in words])
+
+script_dir = path.dirname(path.abspath(__file__))
+
+def init_cmd(args):
+    if os.listdir(os.curdir):
+        print("directory not empty", file=sys.stderr)
+        sys.exit(1)
+
+    shutil.copy(path.join(script_dir, "Makefile"), os.curdir)
+    shutil.copy(path.join(script_dir, ".gitignore"), os.curdir)
+    os.mkdir("src")
+    dirname = path.basename(os.getcwd())
+    libname = to_camel_case(dirname.lstrip("coq-"))
+    with open("libname", "w") as f:
+        f.write(libname + "\n")
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.set_defaults(func=None)
+    subparsers = parser.add_subparsers()
+
+    init = subparsers.add_parser('init', help="initialize a new project")
+    init.set_defaults(func=init_cmd)
+
+    args = parser.parse_args()
+    if args.func is None:
+        print("no command provided", file=sys.stderr)
+        sys.exit(1)
+    args.func(args)
