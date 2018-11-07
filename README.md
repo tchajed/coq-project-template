@@ -1,6 +1,6 @@
 # Example Coq project setup
 
-Run `coup init` in this repo to set up a new project. The script does not set up Travis CI, but a [working Travis configuration](travis.yml) is included in this repo.
+Run `coup init` in this repo to set up a new project. The script does not set up Travis CI, but a [working Travis configuration](travis.yml) is included in this repo, adapted slightly from the [coq-community/docker-coq CI setup](https://github.com/coq-community/docker-coq/wiki/CI-setup).
 
 ## Adding a dependency
 
@@ -20,7 +20,7 @@ Copy this repo's `Makefile` and `.gitignore`. You should put your library's top-
 
 Your code should go in `src` (possibly in subdirectories), which is re-mapped in Coq to the top-level namespace given by `libname`.
 
-For Travis CI, copy `travis.yml` to `.travis.yml` and then enable builds from <https://travis-ci.org>. The default setup uses Coq master. You can instead build against a different branch or commit of Coq by changing `COQ_VERSION`. The configuration isn't set up for using a released version of Coq rather than pinning to the repo.
+For Travis CI, copy `travis.yml` to `.travis.yml` and then enable builds from <https://travis-ci.org>. The default setup builds against the two docker images, `coqorg/coq:dev` and `coqorg/coq:latest`, which correspond to a nightly build of `master` and the latest stable release.
 
 ## Stability
 
