@@ -31,5 +31,7 @@ We will probably change this setup several times before even remotely attempting
 Here are some projects where I'm now using this (if you use it, please let me know!):
 
 - [coq-tactical](https://github.com/tchajed/coq-tactical)
+- [coq-simple-classes](https://github.com/tchajed/coq-simple-classes)
 - [coq-sep-logic](https://github.com/tchajed/coq-sep-logic)
 - [coq-record-update](https://github.com/tchajed/coq-record-update)
+- [coq-array](https://github.com/tchajed/coq-array)
