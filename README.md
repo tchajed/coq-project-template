@@ -26,6 +26,10 @@ For Travis CI, copy `travis.yml` to `.travis.yml` and then enable builds from <h
 
 Many thanks to @anishathalye for helping to work out the design and implementation!
 
+# Stability
+
+This setup isn't remotely stable. In particular, we may move away from `make` and as soon as possible `libname` will be replaced by a more future proof and extensible configuration file.
+
 # Projects using this
 
 Here are some projects where I'm now using this (if you use it, please let me know!):
