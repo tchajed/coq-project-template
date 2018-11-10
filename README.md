@@ -22,9 +22,9 @@ Your code should go in `src` (possibly in subdirectories), which is re-mapped in
 
 For Travis CI, copy `travis.yml` to `.travis.yml` and then enable builds from <https://travis-ci.org>. The default setup builds against the two docker images, `coqorg/coq:dev` and `coqorg/coq:latest`, which correspond to a nightly build of `master` and the latest stable release.
 
-## Stability
+## Credits
 
-We will probably change this setup several times before even remotely attempting stability.
+Many thanks to @anishathalye for helping to work out the design and implementation!
 
 # Projects using this
 
