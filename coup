@@ -14,6 +14,11 @@ def to_camel_case(s):
 
 script_dir = path.dirname(path.abspath(__file__))
 
+def remove_prefix(prefix, s):
+    if s.startswith(prefix):
+        return s[len(prefix):]
+    return s
+
 def init_cmd(args):
     if os.listdir(os.curdir):
         print("directory not empty", file=sys.stderr)
@@ -23,7 +28,7 @@ def init_cmd(args):
     shutil.copy(path.join(script_dir, ".gitignore"), os.curdir)
     os.mkdir("src")
     dirname = path.basename(os.getcwd())
-    libname = to_camel_case(dirname.lstrip("coq-"))
+    libname = to_camel_case(remove_prefix("coq-", dirname))
     with open("libname", "w") as f:
         f.write(libname + "\n")
 
