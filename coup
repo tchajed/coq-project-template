@@ -2,35 +2,82 @@
 
 from __future__ import print_function
 
-import sys
-import os
 from os import path
+import os
+import re
 import shutil
+import subprocess
+import sys
 
 def to_camel_case(s):
     """Convert s, with words separated by -, into CamelCase."""
     words = s.split("-")
     return "".join([word.capitalize() for word in words])
 
-script_dir = path.dirname(path.abspath(__file__))
-
 def remove_prefix(prefix, s):
     if s.startswith(prefix):
         return s[len(prefix):]
     return s
 
-def init_cmd(args):
-    if os.listdir(os.curdir):
-        print("directory not empty", file=sys.stderr)
-        sys.exit(1)
+script_dir = path.dirname(path.abspath(__file__))
 
-    shutil.copy(path.join(script_dir, "Makefile"), os.curdir)
-    shutil.copy(path.join(script_dir, ".gitignore"), os.curdir)
-    os.mkdir("src")
-    dirname = path.basename(os.getcwd())
-    libname = to_camel_case(remove_prefix("coq-", dirname))
-    with open("libname", "w") as f:
-        f.write(libname + "\n")
+class Command:
+    # this should be overriden
+    def parse_cmd(self, cmd_parser):
+        pass
+
+    # this should be overriden
+    def run(self, args):
+        pass
+
+    def setup_parser(self, parser):
+        cmd_parser = parser.add_parser(self.name, help=self.help_str)
+        self.parse_cmd(cmd_parser)
+        cmd_parser.set_defaults(func=lambda args: self.run(args))
+
+
+class InitCmd(Command):
+    name = "init"
+    help_str = "initialize a new project"
+    def parse_cmd(self, parser):
+        parser.add_argument("--no-travis", help="don't copy a Travis configuration file",
+                            dest="travis", action="store_false", default=True)
+
+    def run(self, args):
+        if os.listdir(os.curdir):
+            print("directory not empty", file=sys.stderr)
+            sys.exit(1)
+
+        shutil.copy(path.join(script_dir, "Makefile"), os.curdir)
+        shutil.copy(path.join(script_dir, ".gitignore"), os.curdir)
+        if args.travis:
+            shutil.copy(path.join(script_dir, "travis.yml"), path.join(os.curdir, ".travis.yml"))
+        os.mkdir("src")
+        dirname = path.basename(os.getcwd())
+        libname = to_camel_case(remove_prefix("coq-", dirname))
+        with open("libname", "w") as f:
+            f.write(libname + "\n")
+        subprocess.run(["git", "init"])
+
+
+class InstallCmd(Command):
+    name = "install"
+    help_str = "add a dependency (as a git submodule)"
+    def parse_cmd(self, parser):
+        parser.add_argument("repo_slug", help="username/repo slug from GitHub")
+
+    def get_libdir(self, repo_slug):
+        m = re.match(r""".*/(?P<name>.*)""", repo_slug)
+        if m is None:
+            raise ValueError("could not determine lib directory from repo")
+        libdir = remove_prefix("coq-", m.group("name"))
+        return libdir
+
+    def run(self, args):
+        url = "https://github.com/{}.git".format(args.repo_slug)
+        libdir = self.get_libdir(args.repo_slug)
+        subprocess.run(["git", "submodule", "add", url, path.join("vendor", libdir)])
+        subprocess.run(["make", "_CoqProject"])
 
 
 if __name__ == "__main__":
@@ -38,10 +85,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.set_defaults(func=None)
-    subparsers = parser.add_subparsers()
 
-    init = subparsers.add_parser('init', help="initialize a new project")
-    init.set_defaults(func=init_cmd)
+    subparsers = parser.add_subparsers()
+    InitCmd().setup_parser(subparsers)
+    InstallCmd().setup_parser(subparsers)
 
     args = parser.parse_args()
     if args.func is None:
