@@ -73,9 +73,15 @@ class InstallCmd(Command):
         libdir = remove_prefix("coq-", m.group("name"))
         return libdir
 
+    def chdir_git_root(self):
+        project_top_level = subprocess.check_output(["git", "rev-parse", "--show-toplevel"])
+        project_top_level = project_top_level.rstrip(b"\n")
+        os.chdir(project_top_level)
+
     def run(self, args):
         url = "https://github.com/{}.git".format(args.repo_slug)
         libdir = self.get_libdir(args.repo_slug)
+        self.chdir_git_root()
         subprocess.run(["git", "submodule", "add", url, path.join("vendor", libdir)])
         subprocess.run(["make", "_CoqProject"])
 
