@@ -1,6 +1,6 @@
 # Example Coq project setup
 
-Run `coup init` in this repo to set up a new project. The script does not set up Travis CI, but a [working Travis configuration](travis.yml) is included in this repo, adapted slightly from the [coq-community/docker-coq CI setup](https://github.com/coq-community/docker-coq/wiki/CI-setup).
+Run `aviary init` from this repo to set up a new project.
 
 ## Adding a dependency
 
@@ -10,9 +10,11 @@ To add a library as a dependency, do the following:
 2. Also add any dependencies of your library in the same way.
 3. You can now refer to the library's code prefixed by `Libname.`
 
-For example, to add this library you would do:
+For example, to add the [Tactical library](https://github.com/tchajed/coq-tactical) you would do:
 
-`git submodule add https://github.com/tchajed/coq-lib-example vendor/example`.
+`git submodule add https://github.com/tchajed/coq-tactical vendor/tactical`.
+
+Alternately, you can use `aviary install tchajed/coq-tactical`.
 
 ## Manual setup
 
